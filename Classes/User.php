@@ -18,13 +18,14 @@
                 $dateCreated = null,
                 $dateeUpdateted = null,
                 $lastLoggedIn = null,
+                $dbTableName = "user",
                 
                 $database = null;
         
         
         //contructor
         
-        function __construct($userId, $database) {
+        function __construct($database, $userId = 0) {
             $this->setUserId($userId);
             $this-> database = $database; 
              
@@ -51,13 +52,13 @@
             return $this->fullname;
         }
 
-        public function setDOB($dOB) {
-            $this->dOB = $dOB;
+        public function setDOB($DOB) {
+            $this->DOB = $DOB;
           
         }
 
         public function getDOB() {
-            return $this->dOB;
+            return $this->DOB;
         }
 
         public function setGender($gender) {
@@ -164,6 +165,16 @@
         
         public function register() {
             
+                $sqlQuery = "INSERT INTO  ". $this->dbTableName
+                        . "(fullname, address, email, password, phone_number, DOB, gender, account_status, account_type)"
+                        . "VALUES ('".$this->getFullName()."', '".$this->getAddress()."', '".$this->getEmail()."' ,"
+                        . " '".$this->getPassword()."', '".$this->getPhoneNumber()."', '".$this->getDOB()."', '".$this->getGender()."', 
+                        '".$this->getActStatus()."', '".$this->getActType()."'  "
+                        . ")";
+
+                        //execute query
+                        return $this->database->executeUpdate($sqlQuery);
+                
         }
         
         
@@ -209,6 +220,55 @@
          //  }
            
            // return $this -> egtActStatus() == "Blocked";
+        }
+
+
+        /**
+         * checks the db and see whether the user exists, using his id
+         */
+        public function exists() {
+            //select fullName from user hwere user_id = this->getUserId()
+        }
+
+
+
+        public function anotherDataExists($email=null, $phoneNum =null, $userId = 0) {
+             
+            $sqlQuery = "";
+
+            if ( $email != null) {//email was provided
+                $sqlQuery = " email = '$email' ";
+            }
+            //do same for phone number
+            if ( $phoneNum != null) {//email was provided
+
+                if ($sqlQuery) {
+                    $sqlQuery .= " OR ";
+                }
+                $sqlQuery .= " phone_number = '$phoneNum' ";
+            } 
+
+            //check if either email or phone num was set 
+            if ($sqlQuery) {
+                //go ahead and execute the query
+
+                //do same for user id
+                if ( $userId != 0 && is_numeric($userId)) {//email was provided
+                    $sqlQuery = "(" . $sqlQuery . ") AND user_id != '$userId' ";
+                }
+
+                //execute the query using our database class
+                $sqlQuery = " SELECT * FROM ". $this->dbTableName. " WHERE $sqlQuery";
+                $result = $this->database->executeQuery($sqlQuery);
+ 
+                if ($this->database->getNumRows($result) >=1){
+                    return true;
+                }
+                 
+                return false;
+            }
+           
+
         }
 
     }
