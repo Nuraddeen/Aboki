@@ -3,6 +3,7 @@
 //import the required classes
 require_once("Classes/Database.php");
 require_once("Classes/User.php");
+require_once("Classes/General.php");
 $mydb = new Database();
         
         
@@ -318,6 +319,13 @@ else if (isset($_POST["login"])) {
         <div class = "col-md-6 col-md-pull-6"" class = "bg-light" >
             <h1>
                 Site Logo, Info Adverts Etc
+                <?php 
+                
+                //$gen = new General ();
+                    $pswd = "1234"; 
+                    echo "<br> ". General::func2($pswd)."<br> nn ";
+                
+                ?>
             </h1>
         </div>
         

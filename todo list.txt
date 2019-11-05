@@ -2,6 +2,6 @@ ABOKI TO DO LIST
 
 * create function isValidDOB
 * create function to get Genders and validate them
-* password encryption
-* checking for data that already exists
+* --DONE-- password encryption
+* --DONE-- checking for data that already exists
 * Classes importing at once

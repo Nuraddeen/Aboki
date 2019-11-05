@@ -88,6 +88,7 @@
             return $this->email;
         }
 
+        
         public function setPassword($password) {
             $this->password = $password;
         
@@ -165,10 +166,19 @@
         
         public function register() {
             
+            //1- generate salt
+            //2- set it to this user
+            //$this->setSalt($generatedSalt);
+            //$pswdAndSalt = $this->getSalt().$this->getPassword();
+            
+            $hash = General::getEncryptedHash($this->getPassword());
+            $this->setPassword($hash);
+            
+            
                 $sqlQuery = "INSERT INTO  ". $this->dbTableName
                         . "(fullname, address, email, password, phone_number, DOB, gender, account_status, account_type)"
                         . "VALUES ('".$this->getFullName()."', '".$this->getAddress()."', '".$this->getEmail()."' ,"
-                        . " '".$this->getPassword()."', '".$this->getPhoneNumber()."', '".$this->getDOB()."', '".$this->getGender()."', 
+                        . " '". $this->getPassword()."', '".$this->getPhoneNumber()."', '".$this->getDOB()."', '".$this->getGender()."', 
                         '".$this->getActStatus()."', '".$this->getActType()."'  "
                         . ")";
 

@@ -22,7 +22,7 @@ and open the template in the editor.
         //create a db object
         $mydb = new Database();
          
-        $result = $mydb->query("Select* from user where user_id = 99988");
+        $result = $mydb->executeQuery("Select* from user where user_id = 99988");
         
         //loop thru the result and dump each row
         $dataIsFound = false;
